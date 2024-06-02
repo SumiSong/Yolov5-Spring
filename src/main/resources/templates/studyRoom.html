@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Room</title>
+</head>
+<body>
+<h1>Study Room</h1>
+<video id="video" width="640" height="480" autoplay></video>
+<button id="capture">Capture</button>
+<canvas id="canvas" width="640" height="480" style="display: none;"></canvas>
+
+<script>
+    // 웹캠 활성화
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const captureButton = document.getElementById('capture');
+
+    // 웹캠 스트림 가져오기
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then((stream) => {
+            console.log('Successfully accessed webcam stream.');
+            video.srcObject = stream;
+        })
+        .catch((err) => {
+            console.error('Error accessing webcam: ' + err);
+            alert('Error accessing webcam: ' + err.message);
+        });
+
+    // 캡처 버튼 클릭 이벤트 처리
+    captureButton.addEventListener('click', () => {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataURL = canvas.toDataURL('image/jpeg');
+
+        fetch('https://localhost:8443/api/predict', {  // HTTP로 요청을 보냄
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ image: dataURL })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Prediction result: ' + data.message);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+</script>
+</body>
+</html>
