@@ -1,40 +1,3 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Room</title>
-    <style>
-        .result-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .result-item {
-            margin-bottom: 10px;
-        }
-
-        .result-link {
-            text-decoration: none;
-            color: black;
-        }
-    </style>
-</head>
-<body>
-<h1>Study Room</h1>
-<video id="video" width="640" height="480" autoplay></video>
-<button id="capture">Capture</button>
-<canvas id="canvas" style="display: none;"></canvas>
-<h1>Recognition Results</h1>
-<ul class="result-list">
-    <li th:each="result, iterStat : ${results}" class="result-item">
-        <a th:href="@{/api/results/{id}(id=${result.id})}" class="result-link">
-            <span th:text="'result' + ${iterStat.count}"></span>
-        </a>
-    </li>
-</ul>
-
-<script>
     // 웹캠 활성화
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
@@ -120,6 +83,3 @@
         context.font = '20px Arial';
         context.fillText(`종류: ${classNameStr}, 정확도: ${confidence.toFixed(2)}`, box[0], box[1] > 10 ? box[1] - 5 : 10);
     }
-</script>
-</body>
-</html>

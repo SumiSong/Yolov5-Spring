@@ -2,11 +2,14 @@ package com.example.yolov5Project.study.controller;
 
 import com.example.yolov5Project.response.ResponseDTO;
 import com.example.yolov5Project.response.Tool;
+import com.example.yolov5Project.security.entity.RecognitionResult;
+import com.example.yolov5Project.security.service.RecognitionResultService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +24,28 @@ import java.util.Map;
 public class PredictionController {
     private final Tool tool;
 
-    public PredictionController(Tool tool) {
+    private final RecognitionResultService recognitionResultService;
+
+    public PredictionController(Tool tool, RecognitionResultService recognitionResultService) {
         this.tool = tool;
+        this.recognitionResultService = recognitionResultService;
     }
 
     @GetMapping("/home")
-    public String home(){
+    public String home(Model model){
+        List<RecognitionResult> results = recognitionResultService.getAllResults();
+        model.addAttribute("results", results);
         return "studyRoom";
+    }
+
+    @GetMapping("/results/{id}")
+    public String getResultById(@PathVariable Long id, Model model) {
+        RecognitionResult result = recognitionResultService.getResultById(id);
+        if (result == null) {
+            return "error/404";
+        }
+        model.addAttribute("result", result);
+        return "resultDetail";
     }
 
     @PostMapping("/predict")
@@ -62,10 +80,19 @@ public class PredictionController {
             String jsonResponse = response.getBody();
             ObjectMapper objectMapper = new ObjectMapper();
             List<Map<String, Object>> resultList = objectMapper.readValue(jsonResponse, new TypeReference<List<Map<String, Object>>>() {});
+
+            // 예측 결과 저장
+            for (Map<String, Object> result : resultList) {
+                RecognitionResult recognitionResult = new RecognitionResult();
+                recognitionResult.setObjectName(result.get("class").toString());
+                recognitionResult.setConfidence(Double.parseDouble(result.get("confidence").toString()));
+                recognitionResultService.saveResult(recognitionResult, imageBytes);
+            }
+
             ResponseDTO responseDTO = new ResponseDTO(HttpStatus.OK, "예측 결과", resultList);
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
-            return tool.res(HttpStatus.INTERNAL_SERVER_ERROR, "Flask API 호출 중 에러 발생: " + e.getMessage(), null);
+            return tool.res(HttpStatus.INTERNAL_SERVER_ERROR, "Flask API 호출 에러 발생: " + e.getMessage(), null);
         }
     }
 }

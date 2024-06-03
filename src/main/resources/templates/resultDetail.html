@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recognition Result Detail</title>
+</head>
+<body>
+<h1>Recognition Result Detail</h1>
+<img th:src="@{${result.imageUrl}}" alt="Recognized Image"/>
+<p>Object Name: <span th:text="${result.objectName}"></span></p>
+<p>Confidence: <span th:text="${result.confidence}"></span></p>
+</body>
+</html>
