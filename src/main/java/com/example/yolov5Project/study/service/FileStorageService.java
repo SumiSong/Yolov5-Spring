@@ -1,4 +1,4 @@
-package com.example.yolov5Project.security.service;
+package com.example.yolov5Project.study.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

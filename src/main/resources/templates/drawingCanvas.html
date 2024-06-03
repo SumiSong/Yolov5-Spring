@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Drawing and YOLOv5</title>
+    <style>
+        #canvas {
+            border: 5px solid black;
+        }
+        .color-option {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<h1>Draw on Canvas and Detect Objects</h1>
+<canvas id="canvas" width="640" height="480"></canvas>
+<button id="detect">Detect Objects</button>
+<button id="clear">Clear</button>
+<br>
+<label for="line-width">Brush Width: </label>
+<input id="line-width" type="range" min="1" max="10" value="5" step="0.5"/>
+<br>
+<label for="color">Custom Color: </label>
+<input id="color" type="color" />
+<br>
+<div class="colors" id="jsColors">
+    <div class="color-option" style="background-color: #2c2c2c" data-color="#2c2c2c"></div>
+    <div class="color-option" style="background-color: white" data-color="#ffffff"></div>
+    <div class="color-option" style="background-color: #ff3b30" data-color="#ff3b30"></div>
+    <div class="color-option" style="background-color: #bb853a" data-color="#bb853a"></div>
+    <div class="color-option" style="background-color: #ffcc00" data-color="#ffcc00"></div>
+    <div class="color-option" style="background-color: #4cd963" data-color="#4cd963"></div>
+    <div class="color-option" style="background-color: #5ac8fa" data-color="#5ac8fa"></div>
+    <div class="color-option" style="background-color: #0579ff" data-color="#0579ff"></div>
+    <div class="color-option" style="background-color: #5856d6" data-color="#5856d6"></div>
+</div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    let drawing = false;
+
+    // 기본 브러쉬 설정
+    context.strokeStyle = '#2c2c2c';
+    context.lineWidth = 5;
+
+    // Mouse events for drawing on the canvas
+    canvas.addEventListener('mousedown', (e) => {
+        drawing = true;
+        context.beginPath();
+        context.moveTo(e.offsetX, e.offsetY);
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+        if (drawing) {
+            context.lineTo(e.offsetX, e.offsetY);
+            context.stroke();
+        }
+    });
+
+    canvas.addEventListener('mouseup', () => {
+        drawing = false;
+        context.closePath();
+    });
+
+    // Clear button event
+    document.getElementById('clear').addEventListener('click', () => {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    });
+
+    // Brush width change event
+    document.getElementById('line-width').addEventListener('input', (e) => {
+        context.lineWidth = e.target.value;
+    });
+
+    // Custom color change event
+    document.getElementById('color').addEventListener('input', (e) => {
+        context.strokeStyle = e.target.value;
+    });
+
+    // Color option click events
+    const colors = document.getElementsByClassName('color-option');
+    Array.from(colors).forEach(color => {
+        color.addEventListener('click', (e) => {
+            const selectedColor = e.target.getAttribute('data-color');
+            context.strokeStyle = selectedColor;
+        });
+    });
+
+    // Detect button event
+    document.getElementById('detect').addEventListener('click', () => {
+        const dataURL = canvas.toDataURL('image/jpeg');
+
+        fetch('http://localhost:8080/api/draw/predict', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ image: dataURL })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Detection Result:', data);
+            // Display detection results (e.g., bounding boxes, labels) on the canvas
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+</body>
+</html>

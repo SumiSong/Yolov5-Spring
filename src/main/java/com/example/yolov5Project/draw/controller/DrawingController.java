@@ -1,9 +1,9 @@
-package com.example.yolov5Project.study.controller;
-
+package com.example.yolov5Project.draw.controller;
+import com.example.yolov5Project.draw.entity.DrawResult;
+import com.example.yolov5Project.draw.service.DrawResultService;
 import com.example.yolov5Project.response.ResponseDTO;
 import com.example.yolov5Project.response.Tool;
 import com.example.yolov5Project.study.entity.RecognitionResult;
-import com.example.yolov5Project.study.service.RecognitionResultService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.ByteArrayResource;
@@ -19,28 +19,27 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
+
 @Controller
-@RequestMapping("/api")
-public class PredictionController {
+@RequestMapping("/api/draw")
+public class DrawingController {
+
     private final Tool tool;
+    private final DrawResultService drawResultService;
 
-    private final RecognitionResultService recognitionResultService;
-
-    public PredictionController(Tool tool, RecognitionResultService recognitionResultService) {
+    public DrawingController(Tool tool, DrawResultService drawResultService) {
         this.tool = tool;
-        this.recognitionResultService = recognitionResultService;
+        this.drawResultService = drawResultService;
     }
 
-    @GetMapping("/home")
-    public String home(Model model){
-        List<RecognitionResult> results = recognitionResultService.getAllResults();
-        model.addAttribute("results", results);
-        return "studyRoom";
+    @GetMapping("draw")
+        public String drawingHome() {
+        return "drawingCanvas";
     }
 
     @GetMapping("/results/{id}")
     public String getResultById(@PathVariable Long id, Model model) {
-        RecognitionResult result = recognitionResultService.getResultById(id);
+        DrawResult result = drawResultService.getResultById(id);
         if (result == null) {
             return "error/404";
         }
@@ -83,10 +82,10 @@ public class PredictionController {
 
             // 예측 결과 저장
             for (Map<String, Object> result : resultList) {
-                RecognitionResult recognitionResult = new RecognitionResult();
-                recognitionResult.setObjectName(result.get("class").toString());
-                recognitionResult.setConfidence(Double.parseDouble(result.get("confidence").toString()));
-                recognitionResultService.saveResult(recognitionResult, imageBytes);
+                DrawResult drawResult = new DrawResult();
+                drawResult.setDrawobjectName(result.get("class").toString());
+                drawResult.setDrawconfidence(Double.parseDouble(result.get("confidence").toString()));
+                drawResultService.saveResult(drawResult, imageBytes);
             }
 
             ResponseDTO responseDTO = new ResponseDTO(HttpStatus.OK, "예측 결과", resultList);

@@ -1,8 +1,7 @@
-package com.example.yolov5Project.security.service;
+package com.example.yolov5Project.study.service;
 
-import com.example.yolov5Project.security.entity.RecognitionResult;
-import com.example.yolov5Project.security.repository.RecognitionResultRepository;
-import jakarta.persistence.criteria.Path;
+import com.example.yolov5Project.study.entity.RecognitionResult;
+import com.example.yolov5Project.study.repository.RecognitionResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

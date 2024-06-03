@@ -1,4 +1,4 @@
-package com.example.yolov5Project.security.entity;
+package com.example.yolov5Project.study.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
