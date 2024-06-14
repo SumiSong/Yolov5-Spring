@@ -7,11 +7,12 @@ import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
 @Transactional
+@Service
 public class JoinService {
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
+
 
     public JoinService(UserInfoRepository userInfoRepository, PasswordEncoder passwordEncoder) {
         this.userInfoRepository = userInfoRepository;
@@ -34,4 +35,5 @@ public class JoinService {
         userEntity.setUserEmail(dtoRegister.getUserEmail());
         return userEntity;
     }
+
 }

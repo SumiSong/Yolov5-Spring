@@ -1,24 +1,17 @@
 package com.example.yolov5Project.security.DTO;
 
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DTOLogin {
     private String userId;
     private String userPass;
 
-    public DTOLogin(String userId, String userPass) {
-        this.userId = userId;
-        this.userPass = userPass;
-    }
-
-    @Override
-    public String toString() {
-        return "DTOLogin{" +
-                "userId='" + userId + '\'' +
-                ", userPass='" + userPass + '\'' +
-                '}';
-    }
 }

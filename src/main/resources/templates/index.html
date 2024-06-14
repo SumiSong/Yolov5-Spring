@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-aaa
-</body>
+<html xmlns:sec="http://www.w3.org/1999/xhtml">
+    <body>
+    <div class="container">
+        <div class="user-=info">
+            <div sec:authorize="isAnonymous()" class="nav-item">
+                <a th:href="@{/login}">로그인</a>
+                <p>|</p>
+                <a th:href="@{/join}">회원가입</a>
+            </div>
+            <div sec:authorize="isAuthenticated()" class="nav-item">
+                <a th:href="@{/logout}">로그아웃</a>
+                <p>|</p>
+                <a th:href="@{/api/home}">웹캠을 이용한 과일 맞추기</a>
+                <p>|</p>
+<!--                <a th:href="@{/join}">그림을 그려서 과일 맞추기</a>-->
+            </div>
+
+        </div>
+    </div>
+    </body>
 </html>
