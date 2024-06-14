@@ -26,7 +26,7 @@
 <button id="capture">Capture</button>
 <canvas id="canvas" style="display: none;"></canvas>
 <h1>Recognition Results</h1>
-<ul class="result-list">
+<ul class="result-list" id="resultList">
     <li th:each="result, iterStat : ${results}" class="result-item">
         <a th:href="@{/api/results/{id}(id=${result.id})}" class="result-link">
             <span th:text="'result' + ${iterStat.count}"></span>
@@ -35,11 +35,12 @@
 </ul>
 
 <script>
-    // 웹캠 활성화
+document.addEventListener('DOMContentLoaded', (event) => {
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
     const captureButton = document.getElementById('capture');
+    const resultList = document.getElementById('resultList');
     const fruitMap ={
         0 : '사과',
         1 : '바나나',
@@ -56,6 +57,36 @@
             console.error('Error accessing webcam: ' + err);
             alert('Error accessing webcam: ' + err.message);
         });
+
+     // WebSocket 연결
+    let socket = null;
+    let resultCount = 0; // 결과 번호를 유지하는 변수
+
+    function connect() {
+        socket = new WebSocket('ws://localhost:8080/ws');
+        socket.onopen = function () {
+            console.log('WebSocket connection established');
+        };
+        socket.onmessage = function (event) {
+            console.log('Received message:', event.data);
+            try {
+                const data = JSON.parse(event.data);
+                if (Array.isArray(data)) {
+                    data.forEach(result => processResult(result));
+                } else {
+                    processResult(data);
+                }
+            } catch (e) {
+                console.error('Error parsing WebSocket message:', e);
+            }
+        };
+        socket.onclose = function () {
+            console.log('WebSocket connection closed');
+        };
+    }
+
+    connect();
+
 
     // 캡처 버튼 클릭 이벤트 처리
     captureButton.addEventListener('click', () => {
@@ -120,6 +151,30 @@
         context.font = '20px Arial';
         context.fillText(`종류: ${classNameStr}, 정확도: ${confidence.toFixed(2)}`, box[0], box[1] > 10 ? box[1] - 5 : 10);
     }
+
+    function processResult(result) {
+        if (result && result.id && result.imageUrl && result.objectName) {
+         addResultToList(result);
+        } else {
+            console.error('Invalid result object:', result);
+        }
+    }
+
+
+    function addResultToList(result) {
+        const listItem = document.createElement('li');
+        listItem.className = 'result-item';
+        const link = document.createElement('a');
+        link.className = 'result-link';
+        link.href = `/api/results/${result.id}`;
+        link.textContent = `새로운 내용입니다`;
+        listItem.appendChild(link);
+        resultList.appendChild(listItem);
+
+    }
+    });
+
+
 </script>
 </body>
 </html>

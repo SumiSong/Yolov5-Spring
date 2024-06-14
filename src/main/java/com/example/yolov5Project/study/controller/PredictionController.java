@@ -4,6 +4,7 @@ import com.example.yolov5Project.response.ResponseDTO;
 import com.example.yolov5Project.response.Tool;
 import com.example.yolov5Project.study.entity.RecognitionResult;
 import com.example.yolov5Project.study.service.RecognitionResultService;
+import com.example.yolov5Project.websocket.WebSocketHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.ByteArrayResource;
@@ -23,12 +24,13 @@ import java.util.Map;
 @RequestMapping("/api")
 public class PredictionController {
     private final Tool tool;
-
     private final RecognitionResultService recognitionResultService;
+    private final WebSocketHandler webSocketHandler;
 
-    public PredictionController(Tool tool, RecognitionResultService recognitionResultService) {
+    public PredictionController(Tool tool, RecognitionResultService recognitionResultService, WebSocketHandler webSocketHandler) {
         this.tool = tool;
         this.recognitionResultService = recognitionResultService;
+        this.webSocketHandler = webSocketHandler;
     }
 
     @GetMapping("/home")
@@ -88,6 +90,9 @@ public class PredictionController {
                 recognitionResult.setConfidence(Double.parseDouble(result.get("confidence").toString()));
                 recognitionResultService.saveResult(recognitionResult, imageBytes);
             }
+
+            // WebSocket을 통해 클라이언트로 결과 전송
+            webSocketHandler.sendMessageToAll(jsonResponse);
 
             ResponseDTO responseDTO = new ResponseDTO(HttpStatus.OK, "예측 결과", resultList);
             return ResponseEntity.ok(responseDTO);
