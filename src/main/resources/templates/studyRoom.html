@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Study Room</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript" th:src="@{/js/webcam.js}"></script>
     <link rel="stylesheet"  href="/css/studyroom.css">
 </head>
@@ -16,7 +17,7 @@
                 <video id="video" width="680" height="520" autoplay></video>
                 <canvas id="canvas" style="display: none;"></canvas>
             </div>
-            <button id="capture" class="btn btn-primary">확인하기</button>
+            <button id="capture" class="btn btn-outline-primary">확인하기</button>
         </div>
         <div class="results-section">
             <h1>과일 바구니</h1>
@@ -27,6 +28,7 @@
                     </a>
                 </li>
             </ul>
+            <a th:href="@{/api/draw/draw}" class="btn btn-primary btn-lg w-100 mb-3">그림 그려서 과일 맞추기</a>
         </div>
     </div>
 </div>

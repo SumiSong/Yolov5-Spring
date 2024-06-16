@@ -41,6 +41,7 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
 }
 
 .video-container {
@@ -71,10 +72,23 @@ h1 {
 }
 
 .draw-section button{
-    width: 80%;
+    width: 100%;
     font-size: 18px;
     margin-top: 10px;
     /*border: solid 3px green;*/
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 10px;
+    gap: 5%;
+}
+
+.color-container{
+    display: flex;
+    justify-content: space-between;
 }
 
 .brush-color{
@@ -118,5 +132,10 @@ h1 {
 
 .result-link:hover {
     background-color: #f0f0f0;
+}
+
+.object-info{
+    text-align: left;
+    /*border:solid 3px green;*/
 }
 

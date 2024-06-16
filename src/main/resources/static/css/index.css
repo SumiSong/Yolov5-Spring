@@ -24,22 +24,6 @@ body {
 }
 
 .user-info {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     /*border: solid 3px green;*/
-}
-
-.nav-item {
-    margin-bottom: 10px;
-    width: 100%;
-}
-
-.nav-item a {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
 }

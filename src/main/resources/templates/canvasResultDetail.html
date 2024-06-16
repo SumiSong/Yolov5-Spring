@@ -12,8 +12,10 @@
     <div class="main-content">
         <div class="camera-section">
             <img th:src="@{${result.drawimageUrl}}" alt="Recognized Image"/>
-            <p>과일 이름: <span id="fruitName" th:text="${result.drawobjectName}"></span></p>
-            <p>정확도: <span th:text="${result.drawconfidence}"></span></p>
+            <div class="object-info">
+                <h3>과일 이름: <span id="fruitName" th:text="${result.drawobjectName}"></span></h3>
+                <h3>정확도: <span th:text="${result.drawconfidence}"></span></h3>
+            </div>
         </div>
     </div>
 </div>
