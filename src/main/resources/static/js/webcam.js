@@ -117,7 +117,12 @@ context.fillText(`종류: ${classNameStr}, 정확도: ${confidence.toFixed(2)}`,
 
 function processResult(result) {
 if (result && result.id && result.imageUrl && result.objectName) {
-addResultToList(result);
+    console.log(`Original objectName: ${result.objectName}`);
+    const classNameStr = fruitMap[result.objectName] || result.objectName;
+    console.log(`Mapped objectName: ${classNameStr}`);
+    result.objectName = classNameStr;
+    addResultToList(result);
+
 } else {
 console.error('Invalid result object:', result);
 }
@@ -132,7 +137,8 @@ link.className = 'result-link';
 link.href = `/api/results/${result.id}`;
 link.textContent = `새로운 내용입니다`;
 listItem.appendChild(link);
-resultList.appendChild(listItem);
-
+resultList.insertBefore(listItem, resultList.firstChild);
 }
+
+
 });

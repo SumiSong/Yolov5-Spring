@@ -12,12 +12,14 @@
     <h1>카메라를 이용해 과일을 인식해요!</h1>
     <div class="main-content">
         <div class="camera-section">
-            <video id="video" width="680" height="520" autoplay></video>
-            <button id="capture" class="btn btn-primary">Capture</button>
-            <canvas id="canvas" style="display: none;"></canvas>
+            <div class="video-container">
+                <video id="video" width="680" height="520" autoplay></video>
+                <canvas id="canvas" style="display: none;"></canvas>
+            </div>
+            <button id="capture" class="btn btn-primary">확인하기</button>
         </div>
         <div class="results-section">
-            <h1>인식된 과일 확인하기</h1>
+            <h1>인식된 과일 리스트</h1>
             <ul class="result-list" id="resultList">
                 <li th:each="result, iterStat : ${results}" class="result-item">
                     <a th:href="@{/api/results/{id}(id=${result.id})}" class="result-link">

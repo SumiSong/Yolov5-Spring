@@ -14,13 +14,13 @@
     </div>
     <div class="user-info">
         <div sec:authorize="isAnonymous()" class="d-grid gap-2 col-6 mx-auto">
-            <a th:href="@{/login}" class="btn btn-primary">로그인</a>
-            <a th:href="@{/join}" class="btn btn-primary">회원가입</a>
+            <a th:href="@{/login}" class="btn btn-primary btn-lg">로그인</a>
+            <a th:href="@{/join}" class="btn btn-primary btn-lg">회원가입</a>
         </div>
         <div sec:authorize="isAuthenticated()" class="d-grid gap-2 col-6 mx-auto">
-            <a th:href="@{/logout}" class="btn btn-primary">로그아웃</a>
-            <a th:href="@{/api/home}" class="btn btn-primary">웹캠을 이용한 과일 맞추기</a>
-            <a th:href="@{/api/draw/draw}" class="btn btn-primary">그림을 그려서 과일 맞추기</a>
+            <a th:href="@{/logout}" class="btn btn-primary btn-lg">로그아웃</a>
+            <a th:href="@{/api/home}" class="btn btn-primary btn-lg">웹캠을 이용한 과일 맞추기</a>
+            <a th:href="@{/api/draw/draw}" class="btn btn-primary btn-lg">그림을 그려서 과일 맞추기</a>
         </div>
     </div>
 </div>

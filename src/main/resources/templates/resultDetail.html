@@ -3,12 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recognition Result Detail</title>
+    <title>세부내용</title>
+    <link rel="stylesheet"  href="/css/studyroom.css">
 </head>
 <body>
-<h1>Recognition Result Detail</h1>
-<img th:src="@{${result.imageUrl}}" alt="Recognized Image"/>
-<p>Object Name: <span th:text="${result.objectName}"></span></p>
-<p>Confidence: <span th:text="${result.confidence}"></span></p>
+<div class="container">
+    <h1>인식된 과일은 무엇일까요?</h1>
+    <div class="main-content">
+        <div class="camera-section">
+<!--            <img th:src="@{${result.imageUrl}}" alt="Recognized Image"/>-->
+<!--            <p>과일 이름: <span th:text="${result.objectName}"></span></p>-->
+<!--            <p>정확도: <span th:text="${result.confidence}"></span></p>-->
+            <img th:src="@{${result.imageUrl}}" alt="Recognized Image"/>
+            <p>과일 이름: <span id="fruitName" th:text="${result.objectName}"></span></p>
+            <p>정확도: <span th:text="${result.confidence}"></span></p>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const fruitMap = {
+            0: '사과',
+            1: '바나나',
+            2: '오렌지',
+        };
+
+        const fruitNameElement = document.getElementById('fruitName');
+        const originalObjectName = fruitNameElement.innerText.trim();
+        const mappedObjectName = fruitMap[originalObjectName] || originalObjectName;
+        fruitNameElement.innerText = mappedObjectName;
+    });
+</script>
 </body>
 </html>

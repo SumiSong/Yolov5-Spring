@@ -30,12 +30,9 @@ public class FileStorageService {
             String normalizedFileName = StringUtils.cleanPath(fileName);
 
             try {
-                // Check if the file's name contains invalid characters
                 if (normalizedFileName.contains("..")) {
                     throw new RuntimeException("Sorry! Filename contains invalid path sequence " + normalizedFileName);
                 }
-
-                // Copy file to the target location (Replacing existing file with the same name)
                 Path targetLocation = this.fileStorageLocation.resolve(normalizedFileName);
                 Files.copy(new ByteArrayInputStream(fileBytes), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
