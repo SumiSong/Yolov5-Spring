@@ -15,7 +15,7 @@ import java.nio.file.StandardCopyOption;
 public class DrawFileStorageService {
     private final Path fileStorageLocation;
 
-    public DrawFileStorageService(@Value("${file.upload-dir}") String uploadDir) {
+    public DrawFileStorageService(@Value("${file.upload-dir-canvas}") String uploadDir) {
         this.fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
         try {
             Files.createDirectories(this.fileStorageLocation);
@@ -38,7 +38,7 @@ public class DrawFileStorageService {
             Path targetLocation = this.fileStorageLocation.resolve(normalizedFileName);
             Files.copy(new ByteArrayInputStream(fileBytes), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            return "/uploads/" + normalizedFileName;
+            return "/uploads/canvas/" + normalizedFileName;
         } catch (IOException ex) {
             throw new RuntimeException("Could not store file " + normalizedFileName + ". Please try again!", ex);
         }

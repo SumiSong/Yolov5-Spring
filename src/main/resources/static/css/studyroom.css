@@ -36,6 +36,13 @@ h1 {
     align-items: center;
 }
 
+.draw-section {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .video-container {
     position: relative;
     display: flex;
@@ -63,6 +70,19 @@ h1 {
     /*border: solid 3px green;*/
 }
 
+.draw-section button{
+    width: 80%;
+    font-size: 18px;
+    margin-top: 10px;
+    /*border: solid 3px green;*/
+}
+
+.brush-color{
+    width: 80%;
+    padding: 10px;
+    align-items: start;
+    /*border: solid 3px green;*/
+}
 
 .results-section {
     flex: 2;
@@ -99,3 +119,4 @@ h1 {
 .result-link:hover {
     background-color: #f0f0f0;
 }
+

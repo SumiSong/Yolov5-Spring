@@ -10,6 +10,7 @@ const fruitMap ={
 2 : '오렌지',
 }
 
+
 // 웹캠 스트림 가져오기
 navigator.mediaDevices.getUserMedia({ video: true })
 .then((stream) => {
@@ -140,5 +141,8 @@ listItem.appendChild(link);
 resultList.insertBefore(listItem, resultList.firstChild);
 }
 
-
 });
+
+
+
+

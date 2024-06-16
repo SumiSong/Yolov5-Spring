@@ -4,6 +4,7 @@ import com.example.yolov5Project.draw.service.DrawResultService;
 import com.example.yolov5Project.response.ResponseDTO;
 import com.example.yolov5Project.response.Tool;
 import com.example.yolov5Project.study.entity.RecognitionResult;
+import com.example.yolov5Project.websocket.WebSocketHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.ByteArrayResource;
@@ -26,14 +27,18 @@ public class DrawingController {
 
     private final Tool tool;
     private final DrawResultService drawResultService;
+    private final WebSocketHandler webSocketHandler;
 
-    public DrawingController(Tool tool, DrawResultService drawResultService) {
+    public DrawingController(Tool tool, DrawResultService drawResultService, WebSocketHandler webSocketHandler) {
         this.tool = tool;
         this.drawResultService = drawResultService;
+        this.webSocketHandler = webSocketHandler;
     }
 
     @GetMapping("draw")
-        public String drawingHome() {
+        public String drawingHome(Model model) {
+        List<DrawResult> results = drawResultService.getAllResults();
+        model.addAttribute("results", results);
         return "drawingCanvas";
     }
 
@@ -44,7 +49,7 @@ public class DrawingController {
             return "error/404";
         }
         model.addAttribute("result", result);
-        return "resultDetail";
+        return "canvasResultDetail";
     }
 
     @PostMapping("/predict")
@@ -87,6 +92,9 @@ public class DrawingController {
                 drawResult.setDrawconfidence(Double.parseDouble(result.get("confidence").toString()));
                 drawResultService.saveResult(drawResult, imageBytes);
             }
+
+            // WebSocket을 통해 클라이언트로 결과 전송
+            webSocketHandler.sendMessageToAll(jsonResponse);
 
             ResponseDTO responseDTO = new ResponseDTO(HttpStatus.OK, "예측 결과", resultList);
             return ResponseEntity.ok(responseDTO);

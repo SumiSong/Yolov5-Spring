@@ -11,9 +11,9 @@
     <h1>인식된 과일은 무엇일까요?</h1>
     <div class="main-content">
         <div class="camera-section">
-            <img th:src="@{${result.imageUrl}}" alt="Recognized Image"/>
-            <p>과일 이름: <span id="fruitName" th:text="${result.objectName}"></span></p>
-            <p>정확도: <span th:text="${result.confidence}"></span></p>
+            <img th:src="@{${result.drawimageUrl}}" alt="Recognized Image"/>
+            <p>과일 이름: <span id="fruitName" th:text="${result.drawobjectName}"></span></p>
+            <p>정확도: <span th:text="${result.drawconfidence}"></span></p>
         </div>
     </div>
 </div>

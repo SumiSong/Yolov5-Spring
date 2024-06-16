@@ -16,7 +16,7 @@ public class FileStorageService {
 
         private final Path fileStorageLocation;
 
-        public FileStorageService(@Value("${file.upload-dir}") String uploadDir) {
+        public FileStorageService(@Value("${file.upload-dir-webcam}") String uploadDir) {
             this.fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
             try {
                 Files.createDirectories(this.fileStorageLocation);
@@ -36,7 +36,7 @@ public class FileStorageService {
                 Path targetLocation = this.fileStorageLocation.resolve(normalizedFileName);
                 Files.copy(new ByteArrayInputStream(fileBytes), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-                return "/uploads/" + normalizedFileName;
+                return "/uploads/webcam/" + normalizedFileName;
             } catch (IOException ex) {
                 throw new RuntimeException("Could not store file " + normalizedFileName + ". Please try again!", ex);
             }
