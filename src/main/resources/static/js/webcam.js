@@ -141,6 +141,42 @@ listItem.appendChild(link);
 resultList.insertBefore(listItem, resultList.firstChild);
 }
 
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const resultId = this.getAttribute('data-id');
+            deleteResult(resultId);
+        });
+    });
+
+    // 삭제 함수 정의
+    function deleteResult(id) {
+        fetch(`http://localhost:8080/api/results/${id}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // 삭제된 항목을 UI에서 제거
+                    document.querySelector(`button[data-id="${id}"]`).parentElement.remove();
+                } else {
+                    console.error('Failed to delete result');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // 삭제 버튼 클릭 이벤트 처리
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const resultId = this.getAttribute('data-id');
+                deleteResult(resultId);
+            });
+        });
+    });
+
+
 });
 
 

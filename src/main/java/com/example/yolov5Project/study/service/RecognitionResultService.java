@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class RecognitionResultService {
@@ -61,5 +62,17 @@ public class RecognitionResultService {
     public RecognitionResult getResultById(Long id) {
         return recognitionResultRepository.findById(id).orElse(null);
     }
+
+    // 삭제
+    public void deleteResultById(Long id) {
+        if (recognitionResultRepository.existsById(id)) {
+            recognitionResultRepository.deleteById(id);
+            System.out.println("Deleted result with ID: " + id); // 로그 추가
+        } else {
+            throw new NoSuchElementException("Result not found with id: " + id);
+        }
+    }
+
+
 
 }

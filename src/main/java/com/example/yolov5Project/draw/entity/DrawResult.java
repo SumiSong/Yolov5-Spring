@@ -19,7 +19,7 @@ public class DrawResult {
 
     @Column(name = "drawurl")
     private String drawimageUrl;
-    @Column(name = "drawname")
+    @Column(name = "drawobjectname")
     private String drawobjectName;
     @Column(name = "drawconfidence")
     private double drawconfidence;

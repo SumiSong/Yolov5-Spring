@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 
 @Controller
@@ -50,6 +51,17 @@ public class DrawingController {
         }
         model.addAttribute("result", result);
         return "canvasResultDetail";
+    }
+
+    @DeleteMapping("/results/{id}")
+    public ResponseEntity<ResponseDTO> deleteResult(@PathVariable Long id) {
+        System.out.println("DELETE request received for ID: " + id); // 로그 추가
+        try {
+            drawResultService.deleteResultById(id);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/predict")

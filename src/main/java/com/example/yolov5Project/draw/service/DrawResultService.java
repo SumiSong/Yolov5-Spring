@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class DrawResultService {
@@ -56,6 +57,16 @@ public class DrawResultService {
     //세부 항목 조회
     public DrawResult getResultById(Long id) {
         return drawResultRepository.findById(id).orElse(null);
+    }
+
+    // 삭제
+    public void deleteResultById(Long id) {
+        if (drawResultRepository.existsById(id)) {
+            drawResultRepository.deleteById(id);
+            System.out.println("Deleted result with ID: " + id); // 로그 추가
+        } else {
+            throw new NoSuchElementException("Result not found with id: " + id);
+        }
     }
 
 }

@@ -117,17 +117,20 @@ h1 {
 }
 
 .result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 10px;
 }
 
 .result-link {
     text-decoration: none;
     color: black;
-    display: block;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     transition: background-color 0.3s;
+    flex-grow: 1;
 }
 
 .result-link:hover {

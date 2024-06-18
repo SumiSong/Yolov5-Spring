@@ -26,6 +26,7 @@
                     <a th:href="@{/api/results/{id}(id=${result.id})}" class="result-link">
                         <span th:text="'result' + ${iterStat.count}"></span>
                     </a>
+                    <button class="delete-btn" th:attr="data-id=${result.id}">삭제</button>
                 </li>
             </ul>
             <a th:href="@{/api/draw/draw}" class="btn btn-primary btn-lg w-100 mb-3">그림 그려서 과일 맞추기</a>

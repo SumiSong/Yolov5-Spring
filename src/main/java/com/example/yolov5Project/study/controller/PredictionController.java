@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/api")
@@ -48,6 +49,17 @@ public class PredictionController {
         }
         model.addAttribute("result", result);
         return "resultDetail";
+    }
+
+    @DeleteMapping("/results/{id}")
+    public ResponseEntity<ResponseDTO> deleteResult(@PathVariable Long id) {
+        System.out.println("DELETE request received for ID: " + id); // 로그 추가
+        try {
+            recognitionResultService.deleteResultById(id);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/predict")
